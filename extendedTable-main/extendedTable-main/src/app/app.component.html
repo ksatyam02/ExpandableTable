@@ -1,0 +1,120 @@
+<div class="container mt-4">
+  <h1>Text Table</h1>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th class="arrow"></th>
+        <th class="cell-id">ID</th>
+        <th class="cell-text1">Text 1</th>
+        <th class="cell-text2">Text 2</th>
+        <th class="select">Select</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container
+        *ngFor="let row of textData.rows"
+        (click)="toggleSelection(row)"
+      >
+        <tr>
+          <td (click)="toggleChildren(row)">
+            <span class="arrow" [class.expanded]="row.expanded">&#9658;</span>
+          </td>
+          <td class="cell-id">{{ row.id }}</td>
+          <td class="cell-text1">{{ row.text1 }}</td>
+          <td class="cell-text2">{{ row.text2 }}</td>
+          <td class="checkbox-cell">
+            <input
+              type="checkbox"
+              [checked]="row.selected"
+              (change)="toggleSelection(row)"
+            />
+          </td>
+        </tr>
+        <tr *ngIf="row.expanded && row.children && row.children.length > 0" >
+          <td></td>
+          <td colspan="3">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th class="arrow"></th>
+                  <th class="cell-id">ID</th>
+                  <th class="cell-text1">Text 1</th>
+                  <th class="cell-text2">Text 2</th>
+                  <th class="select">Select</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let child of row.children">
+                  <tr>
+                    <td (click)="toggleChildren(child)">
+                      <span class="arrow" [class.expanded]="child.expanded"
+                        >&#9658;</span
+                      >
+                    </td>
+                    <td class="cell-id">{{ child.id }}</td>
+                    <td class="cell-text1">{{ child.text1 }}</td>
+                    <td class="cell-text2">{{ child.text2 }}</td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        [checked]="child.selected"
+                        (change)="toggleSelection(child)"
+                      />
+                    </td>
+                  </tr>
+                  <tr
+                    *ngIf="
+                      child.expanded &&
+                      child.children &&
+                      child.children.length > 0
+                    "
+                  >
+                    <td></td>
+                    <td colspan="3">
+                      <table class="table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th class="arrow"></th>
+                            <th class="cell-id">ID</th>
+                            <th class="cell-text1">Text 1</th>
+                            <th class="cell-text2">Text 2</th>
+                            <th class="select">Select</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container
+                            *ngFor="let grandchild of child.children"
+                          >
+                            <tr>
+                              <td (click)="toggleChildren(grandchild)">
+                                <span
+                                  class="arrow"
+                                  [class.expanded]="grandchild.expanded"
+                                  >&#9658;</span
+                                >
+                              </td>
+                              <td class="cell-id">{{ grandchild.id }}</td>
+                              <td class="cell-text1">{{ grandchild.text1 }}</td>
+                              <td class="cell-text2">{{ grandchild.text2 }}</td>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  [checked]="grandchild.selected"
+                                  (change)="toggleSelection(grandchild)"
+                                />
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
